@@ -1,0 +1,66 @@
+{% extends "menu.html" %}
+{% block content %}
+<div class="wrapper">
+<div class="left_block">
+<div class="favourites">
+	<h1>Your cooking book</h1>
+</div>
+<div class="favourites_card_container">		
+   {% for recipe in recipes %}
+	<div class="card-container">
+	  <div class="card u-clearfix">
+		<div class="card-body">
+		  <span class="card-number card-circle subtle">{{recipe.id}}</span>
+		  <span class="card-author subtle">Jamie Oliver</span>
+		  <h2 class="card-title">{{recipe.name}}</h2>
+		  <span class="card-description subtle">{{recipe.description}}</span>
+		  <div class="card-read"><a href='/recipe/{{recipe.id}}'>Read</a></div>
+		  <span class="card-tag card-circle subtle">C</span>
+		</div>
+		<img src={{recipe.photo}} alt="photo" class="card-media" width="300" height="auto"/>
+	  </div>
+	  <div class="card-shadow"></div>
+	</div>
+{% endfor %}
+</div>
+</div>
+<div class="right_block">
+{% if user_info['is_authorized'] %}
+	<div class="container1">
+		<section id="content">
+			<form action="../cooking_book/{{user_id}}">
+				<h2>{{user_info['user_info']['name']}}, welcome to our blog!<br><br>
+						In your cooking book {{count}} recipes</h2>						
+				<div>
+					<input type="submit" value="Cooking book" />																											
+				</div>
+			</form>
+			<form action="/" method="post">
+				<div>							
+					<input type="submit" name="logout" value="Log out" />
+				</div>
+			</form><!-- form -->				
+		</section><!-- content -->
+	</div><!-- container -->
+{% else %} 
+	<div class="container">
+		<section id="content">
+			<form action="/" method="post">
+				<h1>Login Form</h1>
+				<div>
+					<input type="text" name="login" placeholder="Username" required="" id="username" />
+				</div>
+				<div>
+					<input type="password" name="password" placeholder="Password" required="" id="password" />
+				</div>
+				<div>
+					<input type="submit" value="Log in" />							
+					<a href="/registration">Register</a>
+				</div>
+			</form><!-- form -->				
+		</section><!-- content -->
+	</div><!-- container -->
+{% endif %}
+</div>
+</div>
+{% endblock %}

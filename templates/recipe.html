@@ -1,0 +1,82 @@
+{% extends "menu.html" %}
+{% block content %}
+<div class="wrapper">
+<div class="left_block">    
+	<div class="recipe-container">
+		<div class="recipe-body">
+			<span class="recipe-number recipe-circle">{{recipe.id}}</span>
+			<h2 class="recipe-title">{{recipe.name}}</h2>
+		</div>
+		<div class="recipe-photo"> 
+			<img src={{recipe.photo}} alt="photo" width="400" height="auto"/>	
+		</div>
+		<div class="recipe-details">
+			<span class="recipe-description">{{recipe.description}}</span>
+		</div>
+		<div class="ingredients">
+			<h1>Ingredients:</h1>		
+			<ol>
+			{% for ingredient in ingredients %}
+			<li><p>{{ingredient}}</p></li>
+			{% endfor %}
+			</ol>
+		</div>		
+		<div class="method">
+			{% if user_info['is_authorized'] %}
+					<form method="post">
+						{% if recipe_info['in_favourite'] %}
+						<button href='/recipe/{{recipe.id}}' method="post" type="submit" class="button1">&hearts; REMOVE</button>						
+						{% else %}
+						<button href='/recipe/{{recipe.id}}' method="post" type="submit" class="button1">&#9825; SAVE</button>						
+						{% endif %}
+					</form>					
+			{% endif %}
+			<h1>Method</h1>		
+			<ol>
+			{% for step in steps %}
+			<li><p>{{step}}</p></li>
+			{% endfor %}
+			</ol>
+		</div>
+	</div>
+</div>
+<div class="right_block">
+{% if user_info['is_authorized'] %}
+	<div class="container">
+		<section id="content">
+			<form action="../cooking_book/{{user_id}}">
+				<h2>{{user_info['user_info']['name']}}, welcome to our blog!<br><br>
+						In your cooking book {{count}} recipes</h2>						
+				<div>
+					<input type="submit" value="Cooking book" />																											
+				</div>
+			</form>
+			<form action="/" method="post">
+				<div>							
+					<input type="submit" name="logout" value="Log out" />
+				</div>
+			</form><!-- form -->				
+		</section><!-- content -->
+	</div><!-- container -->
+{% else %} 
+	<div class="container">
+		<section id="content">
+			<form action="/" method="post">
+				<h1>Login Form</h1>
+				<div>
+					<input type="text" name="login" placeholder="Username" required="" id="username" />
+				</div>
+				<div>
+					<input type="password" name="password" placeholder="Password" required="" id="password" />
+				</div>
+				<div>
+					<input type="submit" value="Log in" />							
+					<a href="/registration">Register</a>
+				</div>
+			</form><!-- form -->				
+		</section><!-- content -->
+	</div><!-- container -->
+{% endif %}
+</div>
+</div>
+{% endblock %}

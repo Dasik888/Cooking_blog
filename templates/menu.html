@@ -1,0 +1,118 @@
+<!DOCTYPE html
+ <html> 
+    <head>
+		<title>{{ title }}</title>               
+		<meta charset='utf-8'>		
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous"
+        >
+		<link rel='stylesheet'
+			type='text/css'
+			href='{{ url_for('static', filename='css/menu.css') }}'>
+	</head>
+   
+	<body>
+		<p class="fig"><img src='{{ url_for('static', filename='images/E-365.jpg') }}' 
+		width="1350" height="auto" alt="Фотография"></p>
+		<div id="site-branding">			
+			<p class="text"><img src='{{ url_for('static', filename='images/cuisine.png') }}'
+			width="400" height="auto"></p>
+		</div>
+		 
+		 <div>
+			 <div id='navigation'>	    
+				<ul>
+				<li><a href='/Home page' tabindex="1"><p>Home page</p></li>		
+				{% for category in categories %}
+				{% if category_name==category.category_name %}
+				<li><a href='/{{category.category_name}}' class='active'><p>{{category.category_name}}</p></a></li>
+				{% else %}
+				<li><a href='/{{category.category_name}}'><p>{{category.category_name}}</p></a></li>
+				{% endif %}
+				{% endfor %}
+				</ul>
+			 </div>
+		</div>
+		{% block content %}
+		<div class="wrapper">
+			<div class="left_block">			
+			{% for recipe in recipes %}
+			<div class="card-container">
+			  <div class="card u-clearfix">
+				<div class="card-body">
+				  <span class="card-number card-circle subtle">{{recipe.id}}</span>
+				  <span class="card-author subtle">Jamie Oliver</span>
+				  <h2 class="card-title">{{recipe.name}}</h2>
+				  <span class="card-description subtle">{{recipe.description}}</span>
+				  <div class="card-read"><a href='/recipe/{{recipe.id}}'>Read</a></div>
+				  <span class="card-tag card-circle subtle">C</span>
+				</div>
+				<img src={{recipe.photo}} alt="photo" class="card-media" width="300" height="auto"/>
+			  </div>
+			  <div class="card-shadow"></div>
+			</div>
+			{% endfor %}			
+			</div>
+			<div class="right_block">		
+				{% if user_info['is_authorized'] %}
+				<div class="container">
+					<section id="content">
+						<form action="../cooking_book/{{user_id}}">
+							<h2>{{user_info['user_info']['name']}}, welcome to our blog!<br><br>
+									In your cooking book {{count}} recipes</h2>						
+							<div>
+								<input type="submit" value="Cooking book" />																											
+							</div>
+						</form>
+						<form action="/" method="post">
+							<div>							
+								<input type="submit" name="logout" value="Log out" />
+							</div>
+						</form><!-- form -->				
+					</section><!-- content -->
+				</div><!-- container -->
+				{% else %} 
+				<div class="container">
+				<section id="content">
+					<form action="/" method="post">
+						<h1>Login Form</h1>
+						<div>
+							<input type="text" name="login" placeholder="Username" required="" id="username" />
+						</div>
+						<div>
+							<input type="password" name="password" placeholder="Password" required="" id="password" />
+						</div>
+						<div>
+							<input type="submit" value="Log in" />							
+							<a href="/registration">Register</a>
+						</div>
+						</form><!-- form -->				
+					</section><!-- content -->
+				</div><!-- container -->
+				{% endif %}
+			</div>				
+		</div>
+		{% endblock %}
+	</body>
+	<footer class="py-3">
+         <div class="copy-bottom-txt text-center py-3">
+            <p> 
+               © 2021 French & Continental Cuisine. All Rights Reserved | Design by Dasik
+            </p>
+         </div>
+         <div class="social-icons mt-lg-3 mt-2 text-center">
+            <ul>
+               <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+               <li><a href="#"><span class="fa fa-twitter"></span></a></li>
+               <li><a href="#"><span class="fa fa-rss"></span></a></li>
+            </ul>
+         </div>
+    </footer>
+	<!-- CDN подключение иконок fontawesome -->
+    <script src="https://use.fontawesome.com/df966d76e1.js"></script>
+</html>
+   
